@@ -1,5 +1,8 @@
-﻿namespace SalesDataAnalysisPlatformMVC.Data
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+namespace SalesDataAnalysisPlatformMVC.Data
 {
+    [Table("SalesDB")]
     public class Sale
     {
         public int SaleID { get; set; }
