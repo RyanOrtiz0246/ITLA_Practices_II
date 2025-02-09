@@ -1,0 +1,26 @@
+﻿@model SalesDataAnalysisPlatformMVC.Data.Sale
+
+<h2>Eliminar Venta</h2>
+<h3>¿Estás seguro de que deseas eliminar esta venta?</h3>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">ID:</dt>
+        <dd class="col-sm-10">@Model.SaleID</dd>
+
+        <dt class="col-sm-2">Cliente:</dt>
+        <dd class="col-sm-10">@Model.ClientID</dd>
+
+        <dt class="col-sm-2">Fecha:</dt>
+        <dd class="col-sm-10">@Model.DateSale.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Monto:</dt>
+        <dd class="col-sm-10">@Model.Amount</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="SaleID" />
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
