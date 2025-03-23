@@ -1,0 +1,24 @@
+﻿@model SalesAnalysisPlatform.Domain.Entities.Sale
+
+<h2>Edit Sale</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label>Date</label>
+        <input asp-for="SaleDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Product Name</label>
+        <input asp-for="ProductName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <input asp-for="Quantity" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-warning">Update</button>
+</form>

@@ -1,4 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using SalesAnalysisPlatform.Application.Interfaces;
+using SalesAnalysisPlatform.Application.Services;
+using SalesAnalysisPlatform.Infrastructure.Context;
+using SalesAnalysisPlatform.Infrastructure.IOC;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("OracleDb"));
+
+builder.Services.AddDbContext<SalesDbContext>(options =>
+    options.UseOracle(builder.Configuration.GetConnectionString("OracleDb"))
+          .EnableSensitiveDataLogging()
+          .LogTo(Console.WriteLine, LogLevel.Information));
+
+builder.Services.AddScoped<ISaleService, SaleService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Sales}/{action=Index}/{id?}");
 
 app.Run();
