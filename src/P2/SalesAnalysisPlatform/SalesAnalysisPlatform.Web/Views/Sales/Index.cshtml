@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SalesAnalysisPlatform.Domain.Entities.Sale>
+
+<h2>Sales List</h2>
+<a asp-action="Create" class="btn btn-primary">Add Sale</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sale in Model)
+        {
+            <tr>
+                <td>@sale.Id</td>
+                <td>@sale.ProductName</td>
+                <td>@sale.Price</td>
+                <td>@sale.Quantity</td>
+                <td>@sale.SaleDate</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@sale.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@sale.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
