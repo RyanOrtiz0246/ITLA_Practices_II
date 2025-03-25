@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SalesAnalysisPlatform.Application\SalesAnalysisPlatform.Application.csproj" />
+    <ProjectReference Include="..\SalesAnalysisPlatform.Domain\SalesAnalysisPlatform.Domain.csproj" />
+    <ProjectReference Include="..\SalesAnalysisPlatform.Infrastructure\SalesAnalysisPlatform.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
