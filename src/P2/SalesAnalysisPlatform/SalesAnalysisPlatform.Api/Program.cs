@@ -1,14 +1,20 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Oracle.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SalesAnalysisPlatform.Infrastructure.IOC;
+using SalesAnalysisPlatform.Infrastructure.Context;
+using SalesAnalysisPlatform.Infrastructure.Repositories;
+using SalesAnalysisPlatform.Domain.Repositories;
+using SalesAnalysisPlatform.Application.Interfaces;
+using SalesAnalysisPlatform.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDbContext<SalesDbContext>(options =>
+    options.UseOracle(builder.Configuration.GetConnectionString("OracleDb"))
+);
 
-// Add services to the container.
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<ISaleService, SaleService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,6 +29,14 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddInfrastructure(connectionString);
 
 builder.Logging.AddConsole();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowWeb", policy =>
+        policy.WithOrigins("https://localhost:7291")
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -41,6 +55,8 @@ else
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("AllowWeb");
 
 app.MapControllers();
 
