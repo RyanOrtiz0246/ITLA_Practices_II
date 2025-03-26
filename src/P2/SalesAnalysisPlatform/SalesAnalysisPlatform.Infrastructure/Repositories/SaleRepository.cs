@@ -1,11 +1,12 @@
 ﻿using SalesAnalysisPlatform.Domain.Entities;
-using SalesAnalysisPlatform.Domain.Repositories;
+using SalesAnalysisPlatform.Infrastructure.Interfaces;
+using SalesAnalysisPlatform.Infrastructure.Core;
 using SalesAnalysisPlatform.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace SalesAnalysisPlatform.Infrastructure.Repositories
 {
-    public class SaleRepository : ISaleRepository
+    public class SaleRepository : BaseRepository<Sale>, ISaleRepository
     {
         private readonly SalesDbContext _context;
 

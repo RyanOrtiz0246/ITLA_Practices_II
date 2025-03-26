@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SalesAnalysisPlatform.Domain.Repositories
+namespace SalesAnalysisPlatform.Infrastructure.Interfaces
 {
     public interface ISaleRepository
     {
