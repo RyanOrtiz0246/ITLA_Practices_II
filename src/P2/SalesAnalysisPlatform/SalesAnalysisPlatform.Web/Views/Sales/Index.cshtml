@@ -1,7 +1,21 @@
 ﻿@model IEnumerable<SalesAnalysisPlatform.Domain.Entities.Sale>
 
-<h2>Sales List</h2>
+@{
+    ViewData["Title"] = "Sales";
+}
+
+<h1>Sales List</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<p>
 <a asp-action="Create" class="btn btn-primary">Add Sale</a>
+</p>
 
 <table class="table">
     <thead>
@@ -20,12 +34,12 @@
             <tr>
                 <td>@sale.Id</td>
                 <td>@sale.ProductName</td>
-                <td>@sale.Price</td>
+                <td>@sale.Price.ToString("C")</td>
                 <td>@sale.Quantity</td>
-                <td>@sale.SaleDate</td>
+                <td>@sale.SaleDate.ToString("dd/MM/yyyy")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@sale.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@sale.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@sale.Id" class="btn btn-sm btn-warning">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@sale.Id" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
         }

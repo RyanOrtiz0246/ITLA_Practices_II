@@ -1,19 +1,21 @@
-using Microsoft.EntityFrameworkCore;
-using SalesAnalysisPlatform.Application.Interfaces;
-using SalesAnalysisPlatform.Application.Services;
-using SalesAnalysisPlatform.Infrastructure.Context;
-using SalesAnalysisPlatform.Infrastructure.IOC;
+using Microsoft.AspNetCore.Mvc;
+using SalesAnalysisPlatform.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("OracleDb"));
+builder.Services.AddHttpClient("SalesAPI", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7237");
+    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+});
 
-builder.Services.AddDbContext<SalesDbContext>(options =>
-    options.UseOracle(builder.Configuration.GetConnectionString("OracleDb"))
-          .EnableSensitiveDataLogging()
-          .LogTo(Console.WriteLine, LogLevel.Information));
+builder.Services.AddScoped<SalesApiService>();
+builder.Services.AddHttpClient<SalesApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7237");
+});
 
-builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Logging.AddConsole().SetMinimumLevel(LogLevel.Debug);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,7 +25,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
