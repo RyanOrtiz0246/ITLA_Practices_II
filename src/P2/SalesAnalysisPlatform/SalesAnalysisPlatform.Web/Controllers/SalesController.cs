@@ -112,5 +112,11 @@ namespace SalesAnalysisPlatform.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var sale = await _salesApiService.GetSaleByIdAsync(id);
+            return sale == null ? NotFound() : View(sale);
+        }
     }
 }
