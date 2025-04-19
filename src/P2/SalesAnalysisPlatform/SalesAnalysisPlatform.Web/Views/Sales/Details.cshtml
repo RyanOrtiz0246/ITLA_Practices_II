@@ -1,18 +1,18 @@
 ﻿@model SalesAnalysisPlatform.Domain.Entities.Sale
 
 @{
-    ViewData["Title"] = "Delete Sale";
+    ViewData["Title"] = "Sale Details";
 }
 
 <div class="card shadow-sm border-0 mt-4">
-    <div class="card-header bg-danger text-white">
-        <h4 class="mb-0">Confirm Deletion</h4>
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Sale Details</h4>
     </div>
-    
     <div class="card-body">
-        <p class="mb-3">Are you sure you want to delete the following sale?</p>
-
         <dl class="row">
+            <dt class="col-sm-3">ID</dt>
+            <dd class="col-sm-9">@Model.Id</dd>
+
             <dt class="col-sm-3">Product Name</dt>
             <dd class="col-sm-9">@Model.ProductName</dd>
 
@@ -25,11 +25,10 @@
             <dt class="col-sm-3">Date</dt>
             <dd class="col-sm-9">@Model.SaleDate.ToString("dd/MM/yyyy")</dd>
         </dl>
-        
-        <form asp-action="DeleteConfirmed" method="post">
-            <input type="hidden" asp-for="Id" />
-            <button type="submit" class="btn btn-danger">Delete</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-        </form>
+        <div class="mt-4">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        </div>
     </div>
 </div>
