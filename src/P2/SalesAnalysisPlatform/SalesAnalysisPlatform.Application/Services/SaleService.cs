@@ -1,6 +1,6 @@
 ﻿using SalesAnalysisPlatform.Application.Interfaces;
 using SalesAnalysisPlatform.Domain.Entities;
-using SalesAnalysisPlatform.Domain.Repositories;
+using SalesAnalysisPlatform.Infrastructure.Interfaces;
 
 namespace SalesAnalysisPlatform.Application.Services
 {

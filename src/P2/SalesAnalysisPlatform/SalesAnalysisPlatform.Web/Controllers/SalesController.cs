@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SalesAnalysisPlatform.Domain.Entities;
+using SalesAnalysisPlatform.Domain.DTOs;
 using SalesAnalysisPlatform.Web.Services;
+using SalesAnalysisPlatform.Web.ViewModels;
 
 namespace SalesAnalysisPlatform.Web.Controllers
 {
@@ -14,19 +15,43 @@ namespace SalesAnalysisPlatform.Web.Controllers
             _salesApiService = salesApiService;
             _logger = logger;
         }
+        private SaleViewModel MapToViewModel(SaleDTO sale)
+        {
+            return new SaleViewModel
+            {
+                Id = sale.Id,
+                ProductName = sale.ProductName,
+                Price = sale.Price,
+                Quantity = sale.Quantity,
+                SaleDate = sale.SaleDate
+            };
+        }
+
+        private SaleDTO MapToDTO(SaleViewModel viewModel)
+        {
+            return new SaleDTO
+            {
+                Id = viewModel.Id,
+                ProductName = viewModel.ProductName,
+                Price = viewModel.Price,
+                Quantity = viewModel.Quantity,
+                SaleDate = viewModel.SaleDate
+            };
+        }
 
         public async Task<IActionResult> Index()
         {
             try
             {
                 var sales = await _salesApiService.GetAllSalesAsync();
-                return View(sales);
+                var viewModels = sales.Select(MapToViewModel).ToList();
+                return View(viewModels);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al cargar ventas");
                 TempData["ErrorMessage"] = "Error al cargar las ventas. Intente más tarde.";
-                return View(new List<Sale>());
+                return View(new List<SaleViewModel>());
             }
         }
 
@@ -37,13 +62,14 @@ namespace SalesAnalysisPlatform.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Sale sale)
+        public async Task<IActionResult> Create(SaleViewModel viewModel)
         {
             if (!ModelState.IsValid)
-                return View(sale);
+                return View(viewModel);
 
             try
             {
+                var sale = MapToDTO(viewModel);
                 if (await _salesApiService.AddSaleAsync(sale))
                     return RedirectToAction(nameof(Index));
 
@@ -55,24 +81,25 @@ namespace SalesAnalysisPlatform.Web.Controllers
                 ModelState.AddModelError("", "Error interno al crear la venta.");
             }
 
-            return View(sale);
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Edit(int id)
         {
             var sale = await _salesApiService.GetSaleByIdAsync(id);
-            return sale == null ? NotFound() : View(sale);
+            return sale == null ? NotFound() : View(MapToViewModel(sale));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Sale sale)
+        public async Task<IActionResult> Edit(SaleViewModel viewModel)
         {
             if (!ModelState.IsValid)
-                return View(sale);
+                return View(viewModel);
 
             try
             {
+                var sale = MapToDTO(viewModel);
                 if (await _salesApiService.UpdateSaleAsync(sale))
                     return RedirectToAction(nameof(Index));
 
@@ -84,13 +111,13 @@ namespace SalesAnalysisPlatform.Web.Controllers
                 ModelState.AddModelError("", "Error interno al actualizar la venta.");
             }
 
-            return View(sale);
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
             var sale = await _salesApiService.GetSaleByIdAsync(id);
-            return sale == null ? NotFound() : View(sale);
+            return sale == null ? NotFound() : View(MapToViewModel(sale));
         }
 
         [HttpPost, ActionName("Delete")]
@@ -116,7 +143,7 @@ namespace SalesAnalysisPlatform.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var sale = await _salesApiService.GetSaleByIdAsync(id);
-            return sale == null ? NotFound() : View(sale);
+            return sale == null ? NotFound() : View(MapToViewModel(sale));
         }
     }
 }

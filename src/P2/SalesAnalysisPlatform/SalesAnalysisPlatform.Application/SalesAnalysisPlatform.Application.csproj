@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SalesAnalysisPlatform.Domain\SalesAnalysisPlatform.Domain.csproj" />
+    <ProjectReference Include="..\SalesAnalysisPlatform.Infrastructure\SalesAnalysisPlatform.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
