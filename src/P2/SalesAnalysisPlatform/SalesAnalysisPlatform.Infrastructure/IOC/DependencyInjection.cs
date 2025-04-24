@@ -15,6 +15,7 @@ namespace SalesAnalysisPlatform.Infrastructure.IOC
                 options.UseOracle(connectionString));
 
             services.AddScoped<ISaleRepository, SaleRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             return services;
         }
