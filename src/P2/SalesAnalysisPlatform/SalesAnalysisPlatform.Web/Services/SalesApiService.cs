@@ -1,4 +1,4 @@
-﻿using SalesAnalysisPlatform.Domain.Entities;
+﻿using SalesAnalysisPlatform.Domain.DTOs;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -15,12 +15,12 @@ namespace SalesAnalysisPlatform.Web.Services
             _logger = logger;
         }
 
-        public async Task<List<Sale>> GetAllSalesAsync()
+        public async Task<List<SaleDTO>> GetAllSalesAsync()
         {
             try
             {
-                var response = await _httpClient.GetFromJsonAsync<List<Sale>>("api/sales");
-                return response ?? new List<Sale>();
+                var response = await _httpClient.GetFromJsonAsync<List<SaleDTO>>("api/sales");
+                return response ?? new List<SaleDTO>();
             }
             catch (HttpRequestException ex)
             {
@@ -29,11 +29,11 @@ namespace SalesAnalysisPlatform.Web.Services
             }
         }
 
-        public async Task<Sale?> GetSaleByIdAsync(int id)
+        public async Task<SaleDTO?> GetSaleByIdAsync(int id)
         {
             try
             {
-                return await _httpClient.GetFromJsonAsync<Sale>($"api/sales/{id}");
+                return await _httpClient.GetFromJsonAsync<SaleDTO>($"api/sales/{id}");
             }
             catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
@@ -41,13 +41,13 @@ namespace SalesAnalysisPlatform.Web.Services
             }
         }
 
-        public async Task<bool> AddSaleAsync(Sale sale)
+        public async Task<bool> AddSaleAsync(SaleDTO sale)
         {
             var response = await _httpClient.PostAsJsonAsync("api/sales", sale);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateSaleAsync(Sale sale)
+        public async Task<bool> UpdateSaleAsync(SaleDTO sale)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/sales/{sale.Id}", sale);
             return response.IsSuccessStatusCode;

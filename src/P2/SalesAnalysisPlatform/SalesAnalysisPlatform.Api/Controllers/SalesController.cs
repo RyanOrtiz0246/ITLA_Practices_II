@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesAnalysisPlatform.Application.Interfaces;
-using SalesAnalysisPlatform.Domain.Entities;
+using SalesAnalysisPlatform.Domain.DTOs;
+using SalesAnalysisPlatform.Application.Mappers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,43 +19,40 @@ namespace SalesAnalysisPlatform.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Sale>>> GetAllSales()
+        public async Task<ActionResult<IEnumerable<SaleDTO>>> GetAllSales()
         {
             var sales = await _saleService.GetAllSalesAsync();
-            return Ok(sales);
+            var dtos = sales.Select(SaleMapper.ToDTO);
+            return Ok(dtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Sale>> GetSaleById(int id)
+        public async Task<ActionResult<SaleDTO>> GetSaleById(int id)
         {
             var sale = await _saleService.GetSaleByIdAsync(id);
             if (sale == null)
             {
                 return NotFound();
             }
-            return Ok(sale);
+            return Ok(SaleMapper.ToDTO(sale));
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateSale([FromBody] Sale sale)
+        public async Task<ActionResult> CreateSale([FromBody] SaleDTO dto)
         {
-            if (sale == null)
-            {
-                return BadRequest();
-            }
-
+            var sale = SaleMapper.ToEntity(dto);
             await _saleService.AddSaleAsync(sale);
-            return CreatedAtAction(nameof(GetSaleById), new { id = sale.Id }, sale);
+            return CreatedAtAction(nameof(GetSaleById), new { id = sale.Id }, SaleMapper.ToDTO(sale));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateSale(int id, [FromBody] Sale sale)
+        public async Task<ActionResult> UpdateSale(int id, [FromBody] SaleDTO dto)
         {
-            if (id != sale.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
-
+            var sale = SaleMapper.ToEntity(dto);
             await _saleService.UpdateSaleAsync(sale);
             return NoContent();
         }

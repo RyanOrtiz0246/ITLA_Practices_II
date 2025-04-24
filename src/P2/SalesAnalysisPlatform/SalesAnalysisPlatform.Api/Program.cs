@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SalesAnalysisPlatform.Infrastructure.IOC;
 using SalesAnalysisPlatform.Infrastructure.Context;
 using SalesAnalysisPlatform.Infrastructure.Repositories;
-using SalesAnalysisPlatform.Domain.Repositories;
+using SalesAnalysisPlatform.Infrastructure.Interfaces;
 using SalesAnalysisPlatform.Application.Interfaces;
 using SalesAnalysisPlatform.Application.Services;
 
