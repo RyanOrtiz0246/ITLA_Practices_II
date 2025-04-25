@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SalesAnalysisPlatform.Application\SalesAnalysisPlatform.Application.csproj" />
     <ProjectReference Include="..\SalesAnalysisPlatform.Domain\SalesAnalysisPlatform.Domain.csproj" />
   </ItemGroup>
 
