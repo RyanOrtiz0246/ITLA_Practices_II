@@ -8,7 +8,11 @@
     </div>
     <div class="card-body">
         <p class="lead">
-            This platform helps you manage, view, and analyze your sales data with ease.
+            This platform helps you manage, view, and analyze both your sales and customer data efficiently.
+        </p>
+
+        <p class="lead">
+            You can track your sales, explore detailed records, and keep your customer information organized—all in one place.
         </p>
 
         <hr />
@@ -16,6 +20,10 @@
         <div class="text-center mt-4">
             <a asp-controller="Sales" asp-action="Index" class="btn btn-outline-primary btn-lg">
                 Go to Sales Dashboard
+            </a>
+
+            <a asp-controller="Customers" asp-action="Index" class="btn btn-outline-secondary btn-lg ml-2">
+                Go to Customer Dashboard
             </a>
         </div>
     </div>
