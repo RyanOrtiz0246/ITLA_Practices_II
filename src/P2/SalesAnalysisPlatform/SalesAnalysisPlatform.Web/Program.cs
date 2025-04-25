@@ -10,7 +10,15 @@ builder.Services.AddHttpClient("SalesAPI", client =>
 });
 
 builder.Services.AddScoped<SalesApiService>();
+
+builder.Services.AddScoped<CustomerApiService>();
+
 builder.Services.AddHttpClient<SalesApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7237");
+});
+
+builder.Services.AddHttpClient<CustomerApiService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7237");
 });
